@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "253312120928",
+    "project_id": "shoppy-f8c06",
+    "storage_bucket": "shoppy-f8c06.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253312120928:android:17f8e8494a3c0ef30beb05",
+        "android_client_info": {
+          "package_name": "com.example.shopappp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "253312120928-n1t7olh2aib5u9b41vhi9kku58oqeokh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopappp",
+            "certificate_hash": "018bde20b798a1f9fa704790a0f6d07386ec0acd"
+          }
+        },
+        {
+          "client_id": "253312120928-aklb3fdujaribrt4bbdimcqn127q3aob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr1rgKBsG4WfZ3EvULlitsz75_poeGQB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "253312120928-aklb3fdujaribrt4bbdimcqn127q3aob.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
