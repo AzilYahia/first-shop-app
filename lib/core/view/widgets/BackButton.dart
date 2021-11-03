@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../RegisterPageEmail.dart';
 import '../palette.dart';
 
 class BackButton extends StatelessWidget {

@@ -3,7 +3,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:shop_appp/core/services/firestore_user.dart';
 import 'package:shop_appp/core/view/Home_View.dart';
 import 'package:shop_appp/model/user_model.dart';

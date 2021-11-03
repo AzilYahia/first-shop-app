@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:shop_appp/core/view/Firstpage.dart';
 import 'package:shop_appp/core/view/palette.dart';
 import 'package:shop_appp/core/viewmodel/auth_view_model.dart';
-import 'package:shop_appp/core/viewmodel/home_view_model.dart';
+import 'package:shop_appp/core/viewmodel/control_view_model.dart';
 
 class ControlView extends GetWidget<AuthViewModel> {
   @override
@@ -13,7 +13,7 @@ class ControlView extends GetWidget<AuthViewModel> {
     return Obx(() {
       return Get.find<AuthViewModel>().user == null
           ? FirstScreen()
-          : GetBuilder<HomeViewModel>(
+          : GetBuilder<ControlViewModel>(
               builder: (controller) => Scaffold(
                 body: controller.currentScreen,
                 bottomNavigationBar: bottomNavigationBar(),
@@ -23,8 +23,8 @@ class ControlView extends GetWidget<AuthViewModel> {
   }
 
   Widget bottomNavigationBar() {
-    return GetBuilder<HomeViewModel>(
-      init: HomeViewModel(),
+    return GetBuilder<ControlViewModel>(
+      init: ControlViewModel(),
       builder: (controller) => BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
