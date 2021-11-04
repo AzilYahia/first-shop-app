@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shop_appp/core/view/details_view.dart';
 import 'package:shop_appp/core/view/palette.dart';
 import 'package:shop_appp/core/viewmodel/home_view_model.dart';
 
@@ -14,6 +15,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeViewModel>(
+      init: Get.find<HomeViewModel>(),
       builder: (controller) => controller.loading.value
           ? Center(child: CircularProgressIndicator())
           : Scaffold(
@@ -179,54 +181,77 @@ class HomeView extends StatelessWidget {
   }
 
   // Widget _listViewProducts() {
-  //   return Container(
-  //     height: 350,
-  //     child: ListView.separated(
-  //       separatorBuilder: (BuildContext context, int index) => SizedBox(
-  //         width: 20,
-  //       ),
-  //       scrollDirection: Axis.vertical,
-  //       itemCount: nameCategories.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return Column(
-  //           children: [
-  //             Container(
-  //               padding:
-  //                   EdgeInsets.only(left: 10, right: 20, top: 15, bottom: 15),
-  //               decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.circular(18),
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                     color: Colors.grey.withOpacity(0.3),
-  //                     spreadRadius: 0.5,
-  //                     blurRadius: 7,
-  //                   ),
-  //                 ],
-  //                 border: Border.all(color: Colors.white),
-  //                 color: Colors.white,
-  //               ),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //   return GetBuilder<HomeViewModel>(
+  //     builder: (controller) => Container(
+  //       height: 320,
+  //       child: ListView.separated(
+  //         separatorBuilder: (BuildContext context, int index) => SizedBox(
+  //           width: 15,
+  //         ),
+  //         itemCount: controller.productModel.length,
+  //         scrollDirection: Axis.horizontal,
+  //         itemBuilder: (BuildContext context, int index) {
+  //           return GestureDetector(
+  //             onTap: () {
+  //               Get.to(DetailsView(
+  //                 model: controller.productModel[index],
+  //               ));
+  //             },
+  //             child: Container(
+  //               width: 164,
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
   //                 children: [
   //                   Container(
   //                     decoration: BoxDecoration(
-  //                       color: kBlack,
+  //                       borderRadius: BorderRadius.circular(25),
+  //                       color: Colors.white,
   //                     ),
-  //                     height: 20,
-  //                     width: 50,
+  //                     height: 220,
+  //                     width: 164,
+  //                     child: Image.network(
+  //                       controller.productModel[index].image,
+  //                       fit: BoxFit.contain,
+  //                     ),
   //                   ),
-  //                   SizedBox(width: 10),
-  //                   Container(
-  //                     child: Text(nameCategories[index]),
-  //                     width: 70,
+  //                   Padding(
+  //                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  //                     child: Text(
+  //                       controller.productModel[index].name,
+  //                       style: TextStyle(
+  //                         fontSize: 16,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Padding(
+  //                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  //                     child: Text(
+  //                       controller.productModel[index].description,
+  //                       style: TextStyle(
+  //                         fontSize: 12,
+  //                         color: Colors.grey,
+  //                       ),
+  //                       maxLines: 1,
+  //                     ),
+  //                   ),
+  //                   Padding(
+  //                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  //                     child: Text(
+  //                       controller.productModel[index].price.toString() + ' \$',
+  //                       style: TextStyle(
+  //                         fontSize: 18,
+  //                         fontWeight: FontWeight.w600,
+  //                         color: kBlue,
+  //                       ),
+  //                     ),
   //                   ),
   //                 ],
   //               ),
   //             ),
-  //           ],
-  //         );
-  //       },
+  //           );
+  //         },
+  //       ),
   //     ),
   //   );
   // }
@@ -243,7 +268,13 @@ class HomeView extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.to(
+                  () => DetailsView(
+                    controller.productModel[index],
+                  ),
+                );
+              },
               child: Container(
                 width: 164,
                 child: Column(
@@ -262,35 +293,26 @@ class HomeView extends StatelessWidget {
                         fit: BoxFit.contain,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        controller.productModel[index].name,
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
+                    Text(
+                      controller.productModel[index].name,
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        controller.productModel[index].description,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                        maxLines: 1,
+                    Text(
+                      controller.productModel[index].description,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
                       ),
+                      maxLines: 1,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        controller.productModel[index].price.toString() + ' \$',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: kBlue,
-                        ),
+                    Text(
+                      'DZD${controller.productModel[index].price}',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: kBlue,
                       ),
                     ),
                   ],

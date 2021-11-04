@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_appp/core/services/firestore_user.dart';
 import 'package:shop_appp/core/view/Home_View.dart';
+import 'package:shop_appp/core/view/control_view.dart';
 import 'package:shop_appp/model/user_model.dart';
 
 class AuthViewModel extends GetxController {
@@ -13,7 +14,6 @@ class AuthViewModel extends GetxController {
   Rxn<User> _user = Rxn<User>();
   String? get user => _user.value?.email;
 
-  FacebookLogin _facebookLogin = FacebookLogin();
   @override
   void onInit() {
     super.onInit();
@@ -57,21 +57,20 @@ class AuthViewModel extends GetxController {
     }
   }
 
-  void facebookSigninMethod() async {
-    FacebookLoginResult result = await _facebookLogin.logIn(['email']);
-    final accessToken = result.accessToken!.token;
+  void facebookSignInMethod() async {
+    final LoginResult result = await FacebookAuth.instance.login();
 
-    if (result.status == FacebookLoginStatus.loggedIn) {
-      final faceCredential = FacebookAuthProvider.credential(accessToken);
-      await _auth.signInWithCredential(faceCredential).then(
-        (user) async {
-          saveUser(user);
-          Get.offAll(
-            () => HomeView(),
-          );
-        },
-      );
-    }
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(result.accessToken!.token);
+
+    await _auth.signInWithCredential(facebookAuthCredential).then(
+      (user) {
+        saveUser(user);
+        Get.offAll(
+          () => ControlView(),
+        );
+      },
+    );
   }
 
   void signInWithEmailAndPassword() async {

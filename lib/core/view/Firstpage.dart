@@ -58,7 +58,7 @@ class FirstScreen extends GetWidget<AuthViewModel> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    controller.facebookSigninMethod();
+                    controller.facebookSignInMethod();
                   },
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(
