@@ -3,15 +3,8 @@ import 'package:get/get.dart';
 import 'package:shop_appp/core/view/details_view.dart';
 import 'package:shop_appp/core/view/palette.dart';
 import 'package:shop_appp/core/viewmodel/home_view_model.dart';
-
+`
 class HomeView extends StatelessWidget {
-  final List<String> nameCategories = <String>[
-    'snakers',
-    'Hoodies',
-    'suits',
-    'hats'
-  ];
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeViewModel>(
