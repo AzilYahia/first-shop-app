@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shop_appp/core/services/home_service.dart';
@@ -15,41 +14,38 @@ class HomeViewModel extends GetxController {
   List<ProductModel> get productModel => _productModel;
   List<ProductModel> _productModel = [];
 
-  final CollectionReference _categoryCollectionReference =
-      FirebaseFirestore.instance.collection('Categories');
-
   HomeViewModel() {
     getCategory();
     getBestSellingProducts();
   }
-
   getCategory() async {
     _loading.value = true;
-    HomeService().getCategory().then((value) {
+    await HomeService().getCategory().then((value) {
       for (int i = 0; i < value.length; i++) {
         _categoryModel.add(
           CategoryModel.fromJson(
             value[i].data() as Map<String, dynamic>,
           ),
         );
+
         _loading.value = false;
       }
       update();
     });
   }
 
-  getBestSellingProducts() {
+  getBestSellingProducts() async {
     _loading.value = true;
     HomeService().getBestSelling().then((value) {
       for (int i = 0; i < value.length; i++) {
-        _categoryModel.add(
-          CategoryModel.fromJson(
+        _productModel.add(
+          ProductModel.fromJson(
             value[i].data() as Map<String, dynamic>,
           ),
         );
         _loading.value = false;
       }
-      print(productModel.length);
+
       update();
     });
   }

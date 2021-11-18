@@ -159,7 +159,7 @@ class RegisterPageEmail extends GetWidget<AuthViewModel> {
                         onPress: () {
                           _formKey.currentState!.save();
                           // if (_formKey.currentState!.validate()) {
-                          controller.createAccountWithEmailAndPassword();
+                          controller.createUserWithEmailAndPassword();
                           // }
                         },
                         lefty: 50,

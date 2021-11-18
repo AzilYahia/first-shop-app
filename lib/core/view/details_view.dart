@@ -3,6 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:shop_appp/core/view/cart_view.dart';
 import 'package:shop_appp/core/view/palette.dart';
+import 'package:shop_appp/core/view/widgets/SubmitButton.dart';
+import 'package:shop_appp/core/viewmodel/cart_view_model.dart';
+import 'package:shop_appp/model/cart_product_model.dart';
 import 'package:shop_appp/model/product_model.dart';
 
 class DetailsView extends StatelessWidget {
@@ -177,20 +180,20 @@ class DetailsView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // GetBuilder<CartViewModel>(
-                    // init: Get.put(CartViewModel()),
-                    // builder: (controller) => ValidationButton(
-                    //   'Add',
-                    //       () => controller.addProduct(
-                    // CartProductModel(
-                    //   name: _model.name,
-                    //   image: _model.image,
-                    //   price: _model.price,
-                    //   productId: _model.productId,
-                    // ),
-                    // ),
-                    // ),
-                    // ),
+                    GetBuilder<CartViewModel>(
+                      init: Get.find(),
+                      builder: (controller) => SubmitButton(
+                        texty: 'Add',
+                        onPress: () => controller.addProduct(
+                          CartProductModel(
+                            name: model.name,
+                            image: model.image,
+                            price: model.price,
+                            productId: model.productId,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )

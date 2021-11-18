@@ -8,12 +8,14 @@ class Fieldtext extends StatelessWidget {
   final Widget? inp;
   final Function(String?)? onSave;
   final FormFieldValidator<String>? validator;
+  final TextInputType? keyboardtype;
   Fieldtext(
       {this.obsec = true,
       this.hint = '',
       this.inp,
       this.onSave,
-      this.validator});
+      this.validator,
+      this.keyboardtype});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class Fieldtext extends StatelessWidget {
             onSaved: onSave,
             validator: validator,
             obscureText: obsec,
+            keyboardType: keyboardtype,
             decoration: InputDecoration(
               suffixIcon: inp,
               // IconButton(

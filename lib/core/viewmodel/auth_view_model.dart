@@ -1,33 +1,25 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shop_appp/core/services/firestore_user.dart';
-import 'package:shop_appp/core/view/Home_View.dart';
 import 'package:shop_appp/core/view/control_view.dart';
+import 'package:shop_appp/helper/local_storage_data.dart';
 import 'package:shop_appp/model/user_model.dart';
 
 class AuthViewModel extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  String? email, password, name;
-  Rxn<User> _user = Rxn<User>();
-  String? get user => _user.value?.email;
 
+  String? email, password, name;
+
+  Rxn<User>? _user = Rxn<User>();
+  String? get user => _user?.value?.email;
+
+  // final LocalStorageUser localStorageData = Get.find();
   @override
   void onInit() {
     super.onInit();
-    _user.bindStream(_auth.authStateChanges());
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+    _user!.bindStream(_auth.authStateChanges());
   }
 
   void googleSignInMethod() async {
@@ -45,7 +37,7 @@ class AuthViewModel extends GetxController {
       await _auth.signInWithCredential(credential).then((user) {
         saveUser(user);
       });
-      Get.offAll(HomeView());
+      Get.offAll(ControlView());
     } catch (error) {
       String errorMessage =
           error.toString().substring(error.toString().indexOf(' ') + 1);
@@ -75,48 +67,92 @@ class AuthViewModel extends GetxController {
 
   void signInWithEmailAndPassword() async {
     try {
-      await _auth.signInWithEmailAndPassword(
-          email: email!, password: password!);
-      Get.offAll(HomeView());
-    } catch (e) {
+      await _auth
+          .signInWithEmailAndPassword(email: email!, password: password!)
+          .then(
+        (user) async {
+          FireStoreUser().getCurrentUser(user.user!.uid).then((doc) {
+            setUser(UserModel.fromJson(doc.data() as Map<dynamic, dynamic>));
+          });
+        },
+      );
+      Get.offAll(() => ControlView());
+    } catch (error) {
+      String errorMessage =
+          error.toString().substring(error.toString().indexOf(' ') + 1);
       Get.snackbar(
-        'Error login Account',
-        'there was an error.',
-        colorText: Colors.black,
-        snackPosition: SnackPosition.TOP,
+        'Failed to login..',
+        errorMessage,
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
 
-  void createAccountWithEmailAndPassword() async {
+  void createUserWithEmailAndPassword() async {
     try {
       await _auth
-          .createUserWithEmailAndPassword(email: email!, password: password!)
-          .then((user) async {
-        saveUser(user);
-      });
-      Get.offAll(HomeView());
-    } catch (e) {
+          .createUserWithEmailAndPassword(
+        email: email!,
+        password: password!,
+      )
+          .then(
+        (user) async {
+          saveUser(user);
+        },
+      );
+
+      Get.offAll(
+        () => ControlView(),
+      );
+    } catch (error) {
+      String errorMessage =
+          error.toString().substring(error.toString().indexOf(' ') + 1);
       Get.snackbar(
-        'Error Sign Up Account',
-        'there was an error.',
-        colorText: Colors.black,
-        snackPosition: SnackPosition.TOP,
+        'Failed to login..',
+        errorMessage,
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
 
   void saveUser(UserCredential user) async {
     UserModel _userModel = UserModel(
-        userId: user.user!.uid,
-        email: user.user!.email!,
-        name: name == null ? user.user!.displayName! : this.name!,
-        pic: ''
-        //user.user!.photoURL == null
-        //? 'default'
-        //: user.user!.photoURL! + "?width=400",
+      userId: user.user!.uid,
+      email: user.user!.email!,
+      name: name == null ? user.user!.displayName! : this.name!,
+      pic: user.user!.photoURL == null
+          ? 'default'
+          : user.user!.photoURL! + "?width=400",
+    );
+    await FireStoreUser().addUserToFireStore(_userModel);
+    setUser(_userModel);
+  }
 
-        );
-    await FireStoreUser().addUsertoFireStore(_userModel);
+  // void getCurrrentUserData(String uid) async {
+  //   await FireStoreUser().getCurrentUser(uid).then(
+  //     (value) {
+  //       setUser(
+  //         UserModel.fromJson(
+  //           value.data() as Map<String, dynamic>,
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  void singOut() async {
+    try {
+      await _auth.signOut();
+      LocalStorageUser.deleteUser();
+    } catch (e) {
+      print(e);
+    }
+    // GoogleSignIn().signOut();
+    // FirebaseAuth.instance.signOut();
+    // LocalStorageUser.deleteUser();
+  }
+
+  void setUser(UserModel userModel) async {
+    await LocalStorageUser.setUser(userModel);
   }
 }
